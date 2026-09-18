@@ -2,6 +2,8 @@
 
 A portfolio-grade e-commerce storefront for an online frozen-food business with a second store for kitchen products. Built with **Next.js 16 (App Router)**, **React 19**, **TypeScript**, **Tailwind CSS 4** and **Zustand**.
 
+**Live demo:** https://frostly-foods.vercel.app
+
 ```bash
 npm install
 npm run dev        # http://localhost:3000
