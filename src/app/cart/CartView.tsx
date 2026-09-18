@@ -3,19 +3,20 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Lock, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
-import { computeTotals, resolveLines, useHydrated, useShop, useUI } from "@/lib/store";
+import { computeTotals, resolveLines, useHydrated, useInviteEligible, useShop, useUI } from "@/lib/store";
 import { products } from "@/lib/products";
 import { formatPrice, img } from "@/lib/format";
 import { FreeShippingBar } from "@/components/FreeShippingBar";
-import { PromoInput, Totals } from "@/components/OrderSummary";
+import { CreditInput, PromoInput, Totals } from "@/components/OrderSummary";
 import { ProductCard } from "@/components/ProductCard";
 
 export function CartView() {
   const hydrated = useHydrated();
-  const { cart, promo, setQty, removeFromCart, toggleWishlist } = useShop();
+  const { cart, promo, creditApplied, setQty, removeFromCart, toggleWishlist } = useShop();
   const toast = useUI((s) => s.toast);
+  const inviteEligible = useInviteEligible();
   const lines = resolveLines(cart);
-  const totals = computeTotals(lines, promo);
+  const totals = computeTotals(lines, promo, creditApplied, inviteEligible);
   const suggestions = products.filter((p) => !cart.some((c) => c.productId === p.id)).sort((a, b) => b.sold - a.sold).slice(0, 4);
 
   if (!hydrated) return <div className="container-x py-24"><div className="skeleton mx-auto h-64 max-w-3xl rounded-3xl" /></div>;
@@ -73,6 +74,7 @@ export function CartView() {
           <div className="space-y-5 rounded-3xl border border-line bg-surface p-6">
             <h2 className="font-display text-2xl font-semibold">Order summary</h2>
             <PromoInput />
+            <CreditInput lines={lines} />
             <Totals lines={lines} />
             <Link href="/checkout" className="flex items-center justify-center gap-2 rounded-full bg-frost-600 py-4 font-semibold text-white shadow-xl shadow-frost-600/25 hover:bg-frost-700">
               <Lock className="size-4" /> Secure checkout

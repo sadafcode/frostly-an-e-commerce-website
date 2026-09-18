@@ -15,12 +15,14 @@ const nav = [
   { href: "/shop?tag=bestseller", label: "Bestsellers" },
   { href: "/shop?sort=discount", label: "Deals" },
   { href: "/track", label: "Track Order" },
+  { href: "/referrals", label: "Refer & Earn" },
 ];
 
 const announcements = [
   "❄️ Free cold-chain delivery on orders above Rs. 3,000",
   "🎉 New here? Use code WELCOME10 for 10% off",
   "🕒 Choose your delivery slot — same-day in Lahore, Karachi & Islamabad",
+  "🎁 Refer a friend — they save Rs. 500, you earn Rs. 700 in credit",
 ];
 
 const subscribeTheme = (cb: () => void) => {

@@ -5,10 +5,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { ArrowLeft, Banknote, Check, CreditCard, Loader2, Lock, ShieldCheck, Smartphone } from "lucide-react";
-import { computeTotals, resolveLines, useHydrated, useShop, type OrderAddress } from "@/lib/store";
+import { computeTotals, resolveLines, useHydrated, useInviteEligible, useShop, type OrderAddress } from "@/lib/store";
 import { cn, formatPrice, img } from "@/lib/format";
 import { CITIES } from "@/components/home/DeliveryChecker";
-import { PromoInput, Totals } from "@/components/OrderSummary";
+import { CreditInput, PromoInput, Totals } from "@/components/OrderSummary";
 import { Steps } from "../cart/CartView";
 
 const WINDOWS = ["10am – 1pm", "1pm – 4pm", "4pm – 7pm", "7pm – 10pm"];
@@ -39,9 +39,10 @@ const cardBrand = (num: string) => (/^4/.test(num) ? "VISA" : /^(5[1-5]|2[2-7])/
 export function CheckoutView() {
   const router = useRouter();
   const hydrated = useHydrated();
-  const { cart, promo, user, placeOrder, clearCart } = useShop();
+  const { cart, promo, user, creditApplied, placeOrder, clearCart } = useShop();
+  const inviteEligible = useInviteEligible();
   const lines = resolveLines(cart);
-  const totals = computeTotals(lines, promo);
+  const totals = computeTotals(lines, promo, creditApplied, inviteEligible);
 
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState<Errors>({});
@@ -140,6 +141,8 @@ export function CheckoutView() {
       delivery: totals.delivery,
       total: totals.total,
       promo: totals.promo?.code,
+      credit: totals.creditUsed || undefined,
+      inviteDiscount: totals.inviteDiscount || undefined,
     });
     router.push(`/order/${id}?new=1`);
     clearCart();
@@ -272,6 +275,7 @@ export function CheckoutView() {
               ))}
             </ul>
             <PromoInput />
+            <CreditInput lines={lines} />
             <Totals lines={lines} />
           </div>
           <div className="mt-4 flex items-center justify-center gap-6 text-xs text-muted">

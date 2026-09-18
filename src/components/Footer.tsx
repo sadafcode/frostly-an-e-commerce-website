@@ -5,7 +5,7 @@ import { Newsletter } from "./Newsletter";
 
 const cols = [
   { title: "Shop", links: [["Frozen Foods", "/shop?store=frozen"], ["Kitchen Essentials", "/shop?store=kitchen"], ["Bestsellers", "/shop?tag=bestseller"], ["Deals", "/shop?sort=discount"]] },
-  { title: "Help", links: [["Track your order", "/track"], ["My account", "/account"], ["Wishlist", "/wishlist"], ["FAQs", "/#faq"]] },
+  { title: "Help", links: [["Track your order", "/track"], ["My account", "/account"], ["Refer & earn", "/referrals"], ["Wishlist", "/wishlist"], ["FAQs", "/#faq"]] },
   { title: "Company", links: [["Our cold chain", "/#cold-chain"], ["Admin dashboard", "/admin"], ["Careers", "/#"], ["Wholesale", "/#"]] },
 ];
 

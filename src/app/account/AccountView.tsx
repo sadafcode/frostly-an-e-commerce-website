@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Gift, Heart, LogOut, MapPin, Package, Snowflake } from "lucide-react";
-import { useHydrated, useShop } from "@/lib/store";
+import { ArrowRight, Gift, Heart, LogOut, MapPin, Package, Snowflake, Users } from "lucide-react";
+import { myCode, useHydrated, useShop, useWallet } from "@/lib/store";
 import { cn, formatPrice } from "@/lib/format";
 
 export function AccountView() {
   const hydrated = useHydrated();
   const { user, orders, wishlist, login, logout } = useShop();
+  const referral = useWallet();
 
   if (!hydrated) return <div className="container-x py-24"><div className="skeleton mx-auto h-96 max-w-md rounded-3xl" /></div>;
   if (!user) return <AuthForm onLogin={login} />;
@@ -86,6 +87,26 @@ export function AccountView() {
             <p className="mt-2 text-sm opacity-80">
               {tier === "Glacier" ? "Top tier unlocked — free delivery forever." : `${nextTier - points} points to ${tier === "Snowflake" ? "Frost" : "Glacier"} tier`}
             </p>
+          </section>
+          <section className="rounded-3xl border border-frost-400 bg-frost-50 p-6 dark:border-frost-700 dark:bg-frost-900/30">
+            <h2 className="flex items-center gap-2 font-display text-xl font-semibold"><Users className="size-5" /> Refer & earn</h2>
+            {referral ? (
+              <>
+                <p className="mt-3 font-display text-3xl font-semibold">{formatPrice(referral.wallet.balance)}</p>
+                <p className="text-sm text-muted">
+                  credit ready to spend · {referral.summary.unlockedCount} friend{referral.summary.unlockedCount === 1 ? "" : "s"} referred
+                  {referral.summary.holdingCount > 0 && ` · ${formatPrice(referral.summary.pending)} clearing`}
+                </p>
+                <p className="mt-4 rounded-xl border border-dashed border-frost-400 bg-bg px-4 py-2 text-center font-display text-lg font-bold tracking-widest text-frost-700 dark:text-frost-300">
+                  {myCode(user)}
+                </p>
+              </>
+            ) : (
+              <p className="mt-3 text-sm text-muted">Loading your referral standing…</p>
+            )}
+            <Link href="/referrals" className="mt-4 inline-flex items-center gap-2 font-semibold text-frost-700 hover:underline dark:text-frost-300">
+              Open referral dashboard <ArrowRight className="size-4" />
+            </Link>
           </section>
           <section className="rounded-3xl border border-line bg-surface p-6">
             <h2 className="flex items-center gap-2 font-display text-xl font-semibold"><MapPin className="size-5" /> Saved address</h2>

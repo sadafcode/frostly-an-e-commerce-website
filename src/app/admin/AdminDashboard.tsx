@@ -8,6 +8,7 @@ import { categories, getProductById, products } from "@/lib/products";
 import { demoOrders, STAGES, stageIndex } from "@/lib/orders";
 import { useHydrated, useShop, type Order } from "@/lib/store";
 import { cn, formatPrice, img } from "@/lib/format";
+import { ReferralAnalytics } from "./ReferralAnalytics";
 
 const DAY = 86_400_000;
 
@@ -168,6 +169,8 @@ export function AdminDashboard() {
           </ul>
         </section>
       </div>
+
+      <ReferralAnalytics now={now} />
 
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <section className="rounded-3xl border border-line bg-surface p-6">

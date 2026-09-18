@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
 import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
-import { computeTotals, resolveLines, useShop, useUI } from "@/lib/store";
+import { computeTotals, resolveLines, useInviteEligible, useShop, useUI } from "@/lib/store";
 import { formatPrice, img } from "@/lib/format";
 import { FreeShippingBar } from "./FreeShippingBar";
 
@@ -13,8 +13,10 @@ export function CartDrawer() {
   const cart = useShop((s) => s.cart);
   const promo = useShop((s) => s.promo);
   const { setQty, removeFromCart } = useShop();
+  const creditApplied = useShop((s) => s.creditApplied);
+  const inviteEligible = useInviteEligible();
   const lines = resolveLines(cart);
-  const totals = computeTotals(lines, promo);
+  const totals = computeTotals(lines, promo, creditApplied, inviteEligible);
 
   useEffect(() => {
     if (!cartOpen) return;
